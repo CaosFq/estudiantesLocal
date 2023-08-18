@@ -1,39 +1,67 @@
 import { useState } from "react";
+import Error from "./Error";
 
 
 
-  const Formulario = () => {
+  const Formulario = ({setEstudiantes, estudiantes}) => {
 
     const [documento, setDocumento] = useState('')
     const [nombre, setNombre] = useState('')
     const [apellido, setApellido] = useState('')
     const [telefono, setTelefono] = useState('')
     const [correo, setCorreo] = useState('')
-    const [estudiante, setEstudiante] = useState({})
+    const [error, setError] = useState(false)
 
     const enviarFormulario = (e) =>{
       e.preventDefault()
-      const obj = {
-        documento,
-        nombre,
-        apellido,
-        telefono, 
-        correo
-      }
-      setEstudiante(obj)
+
+      //validar campos
+      if( [documento, nombre, apellido, correo, telefono].includes('') ){
+        setError(true)
+        return
+      }else setError(false)
+
+      //guardando
+      const obj = {documento, nombre, apellido, correo, telefono}
+      obj.id = getId()
+      setEstudiantes([...estudiantes, obj])
+      limpiarCampos()
+   
     }
+
+    
+    const getId = () => {
+   let id = (Math.random().toString(36)+Date.now().toString(36).substring(2)+Date.now().toString(36))
+   return id 
+    }
+     
+    const limpiarCampos = () => {
+      setDocumento('')
+      setNombre('')
+      setApellido('')
+      setTelefono('')
+      setCorreo('')
+      setError(false)
+      }
+  
+
+
+    
+ 
 
   return (
     <div className="col-md-5 mt-2">
       <form onSubmit={enviarFormulario}>
         <div className="card">
           <div className="card-header">Formulario</div>
+          { error && <Error otra="mas props" mensaje= 'Los campos son obligatorios' /> }
           <div className="card-body">
             <div className="input-group mb-3">
               <span className="input-group-text" id="basic-addon1">
                 Documento:
               </span>
-              <input type="number" className="form-control" value={documento} onChange = { (e) => setDocumento(e.target.value)}/>
+              <input type="number" className="form-control" value= {documento}
+              onChange = { (e) => setDocumento(e.target.value)}/>
           
               
               
