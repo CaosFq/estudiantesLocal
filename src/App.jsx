@@ -23,7 +23,7 @@ const App = () => {
   return (
     <div className="container text-center">
       <div className="row mt-3">
-        <Formulario estudiante={estudiante} estudiantes={estudiantes} setEstudiantes ={setEstudiantes}  />
+        <Formulario setEstudiante={setEstudiante} estudiante={estudiante} estudiantes={estudiantes} setEstudiantes ={setEstudiantes}  />
         <ListaEstudiantes setEstudiante={setEstudiante} borrar={borrar} estudiantes={estudiantes} estudiante={estudiante} />
       </div>
     </div>

@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Error from "./Error";
 
 
 
-  const Formulario = ({setEstudiantes, estudiantes}) => {
+  const Formulario = ({setEstudiantes, estudiantes, estudiante, setEstudiante}) => {
 
     const [documento, setDocumento] = useState('')
     const [nombre, setNombre] = useState('')
@@ -23,8 +23,17 @@ import Error from "./Error";
 
       //guardando
       const obj = {documento, nombre, apellido, correo, telefono}
-      obj.id = getId()
+      if(estudiante.id){
+        obj.id = estudiante.id
+        const otros = estudiantes.map(est => est.id === estudiante.id ? obj:est) 
+        setEstudiantes(otros)
+        
+      }else{
+
+ obj.id = getId()
       setEstudiantes([...estudiantes, obj])
+      }
+     
       limpiarCampos()
    
     }
@@ -42,8 +51,19 @@ import Error from "./Error";
       setTelefono('')
       setCorreo('')
       setError(false)
+      setEstudiante({})
       }
   
+      useEffect(() => {
+        if(estudiante.id && estudiante.id!=='') {
+         setDocumento(estudiante.documento)
+         setNombre(estudiante.nombre)
+         setApellido(estudiante.apellido)
+         setTelefono(estudiante.telefono)
+         setCorreo(estudiante.correo)
+        }
+      }, [estudiante])
+      
 
 
     
@@ -100,12 +120,12 @@ import Error from "./Error";
             
             </div>
 
-            <div className="d-grid ">
-              <input type="Submit" className="btn btn-success" />
-            </div>
+            < div className="d-grid ">
+              <button type="Submit" className="btn btn-success">
+              { estudiante.id?'Editar':'Registrar'}
+              </button>
 
-            <div className="d-grid ">
-              <input type="reset" className="btn btn-info my-2" />
+              <input onClick={limpiarCampos} value='Cancelar' type="button" className="btn btn-info my-2" />
             </div>
           </div>
         </div>
